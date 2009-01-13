@@ -15,6 +15,6 @@ Download the latest Lucene Database interface from the SVN repository.  (Instruc
 Run "ant" to compile the code and build SRWLucene.jar.
 
 =Step 3=
-After you’ve run “ant”, you’ll find a directory named “dist” and in it you will find the SRWLucene.jar file. Copy that file to your <tomcat>/webapps/<SRW>/WEB-INF/lib directory.
+After you’ve run “ant”, you’ll find a directory named “dist” and in it you will find the SRWLucene.jar file. Copy that file to your `<tomcat>/webapps/<SRW>/WEB-INF/lib` directory.
 
 =Testing=
