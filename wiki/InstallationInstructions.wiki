@@ -2,12 +2,16 @@
 
 = Introduction =
 
-Add your content here.
+Instructions for how to build the Lucene Database interface for the SRW/SRU server.
 
 
 = Details =
+===Prerequisites===
+  * Tomcat or some other servlet engine
+  * Ant
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+===Step 1===
+Download the latest Lucene Database interface from the SVN repository.  (Instructions for that can be found [http://code.google.com/p/oclcsrwlucene/source/checkout here].)
+
+===Step 2===
+Run "ant" to compile the code and build SRWLucene.jar.
