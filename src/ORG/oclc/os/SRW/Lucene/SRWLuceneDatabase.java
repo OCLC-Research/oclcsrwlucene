@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
@@ -185,13 +186,15 @@ public class SRWLuceneDatabase extends SRWDatabase {
         TermList list=new TermList();
         if(position>1) {
             log.debug("unsupported responsePosition="+position);
-            list.addDiagnostic(SRWDiagnostic.ResponsePositionOutOfRange, "0-1");
+            list.addDiagnostic(SRWDiagnostic.ResponsePositionOutOfRange, Integer.toString(position));
         }
         else {
             try {
                 int      i;
                 Query q=translator.makeQuery(cqlTermNode);
-                Term t=translator.getTerm();
+                HashSet<Term> terms=new HashSet<Term>();
+                q.extractTerms(terms);
+                Term t=terms.iterator().next();
                 log.debug("scan term="+t);
                 TermEnum te=searcher.getIndexReader().terms(t);
                 Vector<TermType> v=new Vector<TermType>();
@@ -239,6 +242,8 @@ public class SRWLuceneDatabase extends SRWDatabase {
         }
         super.initDB(dbname, srwHome, dbHome, dbPropertiesFileName, dbProperties);
 
+        maxTerms=10;
+        position=1;
         indexPath=dbProperties.getProperty("SRWLuceneDatabase.indexPath");
         log.debug("indexPath="+indexPath);
         if(indexPath==null) {
