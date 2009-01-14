@@ -41,11 +41,11 @@ public class BasicLuceneRecordResolver implements RecordResolver {
     public BasicLuceneRecordResolver() {
     }
 
-    @Override
+// Not legal until JDK 6    @Override
     public void init(Properties properties) {
     }
 
-    @Override
+// Not legal until JDK 6    @Override
     public Record resolve(Document doc, String IdFieldName, ExtraDataType extraDataType) {
         // Enumeration fields=doc.fields(); // lucene 1.4
         Iterator fields=doc.getFields().iterator();
