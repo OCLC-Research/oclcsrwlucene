@@ -19,4 +19,7 @@ After you’ve run “ant”, you’ll find a directory named “dist” and in 
 
 =Testing=
 [http://localhost:8080/SRW/search/lucenetest]
-[http://localhost:8080/SRW/search/lucenetest?query=local.contents=dog][http://localhost:8080/SRW/search/lucenetest?scanClause=local.contents=dog]
+
+[http://localhost:8080/SRW/search/lucenetest?query=local.contents=dog]
+
+[http://localhost:8080/SRW/search/lucenetest?scanClause=local.contents=dog]
