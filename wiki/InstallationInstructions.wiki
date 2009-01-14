@@ -20,7 +20,9 @@ After you’ve run “ant”, you’ll find a directory named “dist” and in 
 =Testing=
 The SRWLucene package included the Lucene demo database build from their documentation.  If you'd like to test with it, edit the SRWServer.props file in the `<tomcat>/webapps/SRW/WEB-INF/classes` directory and change the path in the db.testlucene.home property.  After making that change, start (or restart) your tomcat server and the following links (changed as necessary for your installation) should work.
 
-[http://localhost:8080/SRW/search/lucenetest]
+[http://localhost:8080/SRW/search/lucenetest] should get you something like this:
+
+http://oclcsrw.googlecode.com/svn/wiki/images/LuceneTestExplainResponse.jpg
 
 [http://localhost:8080/SRW/search/lucenetest?query=local.contents=dog]
 
