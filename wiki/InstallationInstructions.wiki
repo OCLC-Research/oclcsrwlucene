@@ -15,6 +15,6 @@ Download the latest Lucene Database interface from the SVN repository.  (Instruc
 Run "ant" to compile the code and build SRWLucene.jar.
 
 ==Step 3==
-After you’ve run “ant”, you’ll find a directory named “dist” and in it you will find the SRWLucene.jar file. Copy that file to your `<tomcat>/webapps/<SRW>/WEB-INF/lib` directory.
+After you’ve run “ant”, you’ll find a directory named “dist” and in it you will find the SRWLucene.jar file. If you are building a new complete SRW server, then copy the jar file from the "dist" directory and the jars (except the SRW jar!) from the "lib" directory to the web/WEB-INF/lib directory of the SRW distribution.  If you are just updating an already deployed SRW server, then copy those same files to your `<tomcat>/webapps/<SRW>/WEB-INF/lib` directory.
 
 =Testing=
