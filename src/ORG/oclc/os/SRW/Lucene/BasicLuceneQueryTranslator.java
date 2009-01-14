@@ -60,7 +60,7 @@ public class BasicLuceneQueryTranslator implements CqlQueryTranslator {
         }
     }
 
-    @Override
+// Not legal until JDK 6    @Override
     public Term getTerm() {
         return tterm;
     }
@@ -92,12 +92,12 @@ public class BasicLuceneQueryTranslator implements CqlQueryTranslator {
         qp=new QueryParser(defaultField, analyzer);
     }
 
-    @Override
+// Not legal until JDK 6    @Override
     public void init(Properties properties, SRWLuceneDatabase ldb) throws InstantiationException {
         init(properties, ldb.searcher);
     }
 
-    @Override
+// Not legal until JDK 6    @Override
     public Query makeQuery(CQLNode node) throws SRWDiagnostic {
         StringBuffer sb=new StringBuffer();
         makeLuceneQuery(node, sb);
