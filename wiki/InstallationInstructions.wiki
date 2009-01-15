@@ -24,10 +24,10 @@ The SRWLucene package included the Lucene demo database build from their documen
 
 http://oclcsrw.googlecode.com/svn/wiki/images/LuceneTestExplainResponse.jpg
 
-[http://localhost:8080/SRW/search/lucenetest?query=local.contents=dog]
+[http://localhost:8080/SRW/search/lucenetest?query=local.contents=dog] should get you something like this:
 
 http://oclcsrw.googlecode.com/svn/wiki/images/LuceneTestSearchResponse.jpg
 
-[http://localhost:8080/SRW/search/lucenetest?scanClause=local.contents=dog]
+[http://localhost:8080/SRW/search/lucenetest?scanClause=local.contents=dog] should get you something like this:
 
 http://oclcsrw.googlecode.com/svn/wiki/images/LuceneTestScanResponse.jpg
