@@ -26,4 +26,8 @@ http://oclcsrw.googlecode.com/svn/wiki/images/LuceneTestExplainResponse.jpg
 
 [http://localhost:8080/SRW/search/lucenetest?query=local.contents=dog]
 
+http://oclcsrw.googlecode.com/svn/wiki/images/LuceneTestSearchResponse.jpg
+
 [http://localhost:8080/SRW/search/lucenetest?scanClause=local.contents=dog]
+
+http://oclcsrw.googlecode.com/svn/wiki/images/LuceneTestScanResponse.jpg
