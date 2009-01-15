@@ -70,7 +70,7 @@ LuceneDocument.title=Lucene records in their internal format
  
 ==Lucene Specific Information==
 ||SRWLuceneDatabase.indexPath (optional) || The full path to the directory that contains the Lucene index.  If omitted, it will default to the database home as specified in the SRWServer.props file.||
-||SRWLuceneDatabase .CqlToLuceneQueryTranslator (optional) || The name of a class that will accept a CQL query and return a Lucene Query object.  If omitted, it will default to the BasicLuceneQueryTranslator.||
+||`SRWLuceneDatabase.CqlToLuceneQueryTranslator` (optional) || The name of a class that will accept a CQL query and return a Lucene Query object.  If omitted, it will default to the `BasicLuceneQueryTranslator`.||
 
 =Example SRWDatabase.props file=
 Here is my SRWDatabase.props file for the Lucene Demo Database:
