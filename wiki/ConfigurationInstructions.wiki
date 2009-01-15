@@ -56,8 +56,8 @@ For each schema in the list, we look for information about the schema and how to
 ||`<schemaName>.location` || The URL of the XSD or DTD description of the schema.||
 ||`<schemaName>.namespace` || The namespace associated with the schema.||
 
-Traditionally, Lucene does not store the records that it indexes, but it does store some of the fields that it has indexed.  At the very least, it stores some sort of identifier that can be used to retrieve the original record.  By default, records are gotten from Lucene using the BasicLuceneRecordResolver, which retrieves all of the fields that Lucene was asked to keep after indexing.  If you want to provide a resolver to retrieve the actual documents from wherever they reside, you would specify them this way:
-||`<schemaName>.resolver` (optional) || The name of a class that implements the RecordResolver interface.  Defaults to the `BasicLuceneRecordResolver`.||
+Traditionally, Lucene does not store the records that it indexes, but it does store some of the fields that it has indexed.  At the very least, it stores some sort of identifier that can be used to retrieve the original record.  By default, records are gotten from Lucene using the `BasicLuceneRecordResolver`, which retrieves all of the fields that Lucene was asked to keep after indexing.  If you want to provide a resolver to retrieve the actual documents from wherever they reside, you would specify them this way:
+||`<schemaName>.resolver` (optional) || The name of a class that implements the `RecordResolver` interface.  Defaults to the `BasicLuceneRecordResolver`.||
 
 If no schema information is provided, the SRWLuceneDatabase class will provide this information automatically:
 {{{
