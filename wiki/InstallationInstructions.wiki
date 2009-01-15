@@ -5,6 +5,7 @@
 Instructions for how to build the Lucene Database interface for the SRW/SRU server.
 
 ==Prerequisites==
+  * Java 1.5 or higher
   * Tomcat or some other servlet engine
   * Ant
 
