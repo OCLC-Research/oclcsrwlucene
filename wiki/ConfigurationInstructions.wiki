@@ -5,9 +5,11 @@
 You need to let the SRW server know of the existence of your Lucene database.  You do this by adding three lines to the SRWServer.props file.  This file is typically found in your webapps/SRW/WEB-INF/classes directory.  If it is not there, or has a different name, then the webapps/SRW/web.xml file will have an explicit pointer to it.
 
 Add these three lines to the SRWServer.props file:
-  `db.<databaseName>.class`=ORG.oclc.SRW.Lucene.SRWLuceneDatabase.class<br/>
-  `db.<databaseName>.home=<full pathname to your Lucene database directory>`<br/>
+<pre>
+  `db.<databaseName>.class`=ORG.oclc.SRW.Lucene.SRWLuceneDatabase.class
+  `db.<databaseName>.home=<full pathname to your Lucene database directory>`
   `db.<databaseName>.configuration`=SRWDatabase.props
+</pre>
 
 The `db.<databaseName>.home` property points to the directory that contains the database index directory.  This is also where SRW will expect to find any other files necessary for its operation.
 
