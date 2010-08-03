@@ -23,13 +23,22 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-
-import java.util.*;
 import ORG.oclc.os.SRW.SRWDiagnostic;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.StringTokenizer;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.z3950.zing.cql.CQLAndNode;
+import org.z3950.zing.cql.CQLBooleanNode;
+import org.z3950.zing.cql.CQLNode;
+import org.z3950.zing.cql.CQLNotNode;
+import org.z3950.zing.cql.CQLOrNode;
+import org.z3950.zing.cql.CQLTermNode;
 
 /**
  * @author peter
@@ -128,7 +137,7 @@ public class BasicLuceneQueryTranslator implements CqlQueryTranslator {
         }
         else if(node instanceof CQLTermNode) {
             CQLTermNode ctn=(CQLTermNode)node;
-            String index=ctn.getQualifier(),
+            String index=ctn.getIndex(),
                    newIndex=(String)indexMappings.get(index);
             if(newIndex!=null)
                 index=newIndex;
@@ -184,7 +193,7 @@ public class BasicLuceneQueryTranslator implements CqlQueryTranslator {
         }
         else if(node instanceof CQLTermNode) {
             CQLTermNode ctn=(CQLTermNode)node;
-            if(log.isDebugEnabled())log.debug("term(qualifier=\""+ctn.getQualifier()+"\" relation=\""+
+            if(log.isDebugEnabled())log.debug("term(qualifier=\""+ctn.getIndex()+"\" relation=\""+
                 ctn.getRelation().getBase()+"\" term=\""+ctn.getTerm()+"\")");
         }
         else if(log.isDebugEnabled())log.debug("UnknownCQLNode("+node+")");
