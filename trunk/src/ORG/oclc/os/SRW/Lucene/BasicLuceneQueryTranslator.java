@@ -26,7 +26,7 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.z3950.zing.cql.*;
+
 
 import java.util.*;
 import ORG.oclc.os.SRW.SRWDiagnostic;
