@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.axis.types.NonNegativeInteger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -227,7 +228,7 @@ public class SRWLuceneDatabase extends SRWDatabase {
 
     @Override
     public void init(String dbname, String srwHome, String dbHome,
-      String dbPropertiesFileName, Properties dbProperties) throws InstantiationException {
+      String dbPropertiesFileName, Properties dbProperties, HttpServletRequest req) throws InstantiationException {
         if(log.isDebugEnabled())log.debug("entering SRWLuceneDatabase.init, dbname="+dbname);
 
         String xmlSchemaList=dbProperties.getProperty("xmlSchemas");
