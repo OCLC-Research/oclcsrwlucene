@@ -22,6 +22,6 @@ import org.z3950.zing.cql.CQLNode;
 public interface CqlQueryTranslator {
     void init(Properties properties, SRWLuceneDatabase ldb) throws InstantiationException;
 
-    Query makeQuery(CQLNode node) throws SRWDiagnostic;
+    public Query makeQuery(CQLNode node) throws SRWDiagnostic;
     public Term getTerm();
 }
