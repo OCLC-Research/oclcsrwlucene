@@ -21,26 +21,14 @@
 
 package ORG.oclc.os.SRW.Lucene;
 
-import ORG.oclc.os.SRW.QueryResult;
-import ORG.oclc.os.SRW.Record;
-import ORG.oclc.os.SRW.SRWDatabase;
-import ORG.oclc.os.SRW.SRWDiagnostic;
-import ORG.oclc.os.SRW.SortTool;
-import ORG.oclc.os.SRW.TermList;
+import ORG.oclc.os.SRW.*;
 import gov.loc.www.zing.srw.ExtraDataType;
 import gov.loc.www.zing.srw.ScanRequestType;
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 import gov.loc.www.zing.srw.TermType;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Properties;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.axis.types.NonNegativeInteger;
 import org.apache.commons.logging.Log;
@@ -48,12 +36,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
-import org.apache.lucene.search.Hits;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-//import org.osuosl.srw.ResolvingQueryResult;
+import org.apache.lucene.search.*;
 import org.z3950.zing.cql.CQLNode;
 import org.z3950.zing.cql.CQLTermNode;
 
@@ -66,7 +49,7 @@ public class SRWLuceneDatabase extends SRWDatabase {
 
     CqlQueryTranslator translator=null;
 //    Hashtable          indexSynonyms=new Hashtable();
-    Hashtable<String, RecordResolver> resolvers=new Hashtable<String, RecordResolver>();
+    HashMap<String, RecordResolver> resolvers=new HashMap<String, RecordResolver>();
     IndexSearcher      searcher=null;
     String             idFieldName=null, indexInfo=null, indexPath=null;
 
@@ -198,7 +181,7 @@ public class SRWLuceneDatabase extends SRWDatabase {
                 Term t=terms.iterator().next();
                 log.debug("scan term="+t);
                 TermEnum te=searcher.getIndexReader().terms(t);
-                Vector<TermType> v=new Vector<TermType>();
+                ArrayList<TermType> v=new ArrayList<TermType>();
                 for(i=position; i<1; i++)
                     te.next();
                 for(i=1; i<=maxTerms; i++) {
@@ -299,12 +282,12 @@ public class SRWLuceneDatabase extends SRWDatabase {
         if(log.isDebugEnabled())log.debug("leaving SRWLuceneDatabase.init");
     }
 
-    public static String makeIndexInfo(Properties props, IndexSearcher searcher, Hashtable<String, String> indexMappings) {
+    public static String makeIndexInfo(Properties props, IndexSearcher searcher, HashMap<String, String> indexMappings) {
         Collection c=searcher.getIndexReader().getFieldNames(IndexReader.FieldOption.INDEXED);
-        Hashtable<String, String> sets=new Hashtable<String, String>();
+        HashMap<String, String> sets=new HashMap<String, String>();
         int             indexNum=0;
         String          index, indexSet, luceneIndex, prop;
-        StringBuffer    sb=new StringBuffer("        <indexInfo>\n");
+        StringBuilder    sb=new StringBuilder("        <indexInfo>\n");
         StringTokenizer st;
 
         Iterator iter=c.iterator();
