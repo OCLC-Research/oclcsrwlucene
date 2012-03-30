@@ -28,7 +28,9 @@ import java.util.NoSuchElementException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 
 /**
  *
@@ -40,18 +42,21 @@ public class LuceneRecordIterator implements RecordIterator {
     ExtraDataType edt;
     int numRecs;
     long whichRec;
+    IndexSearcher searcher;
     LuceneQueryResult result;
     RecordResolver resolver;
     String schemaId;
 
     /** Creates a new instance of LuceneRecordIterator */
     public LuceneRecordIterator(long whichRec, String schemaId,
-      LuceneQueryResult result, RecordResolver resolver, ExtraDataType edt) {
+      LuceneQueryResult result, RecordResolver resolver, IndexSearcher searcher,
+        ExtraDataType edt) {
         log.debug("whichRec="+whichRec+", schemaId="+schemaId+", result="+result+", resolver="+resolver+", edt="+edt);
         this.whichRec=whichRec;
         this.schemaId=schemaId;
         this.result=result;
         this.resolver=resolver;
+        this.searcher=searcher;
         this.edt=edt;
     }
 
@@ -70,15 +75,17 @@ public class LuceneRecordIterator implements RecordIterator {
     }
 
     public Record nextRecord() throws NoSuchElementException {
-        Hits hits=result.getHits();
+        TopDocs hits = result.getHits();
         try {
-            Document doc=hits.doc((int)whichRec-1);
+            ScoreDoc scoredoc = hits.scoreDocs[(int)whichRec-1];
+            log.debug("scoredoc="+scoredoc);
+            Document doc = searcher.doc(scoredoc.doc);
             log.debug("doc="+doc);
             return resolver.resolve(doc, result.ldb.idFieldName, edt);
         }
         catch(Exception e) {
             log.error(e, e);
-            log.error("whichRec="+whichRec+", hits.length()="+hits.length());
+            log.error("whichRec="+whichRec+", hits.totalHits="+hits.totalHits);
             throw new NoSuchElementException(e.getMessage());
         }
         finally {

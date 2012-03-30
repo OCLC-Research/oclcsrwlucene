@@ -26,7 +26,7 @@ import ORG.oclc.os.SRW.RecordIterator;
 import gov.loc.www.zing.srw.ExtraDataType;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.TopDocs;
 
 
 /**
@@ -36,7 +36,7 @@ import org.apache.lucene.search.Hits;
 public class LuceneQueryResult extends QueryResult {
     static final Log log=LogFactory.getLog(LuceneQueryResult.class);
 
-    Hits hits=null;
+    TopDocs hits=null;
     SRWLuceneDatabase ldb=null;
 
     /** Creates a new instance of LuceneQueryResult */
@@ -44,12 +44,12 @@ public class LuceneQueryResult extends QueryResult {
     }
 
     /** Creates a new instance of LuceneQueryResult */
-    public LuceneQueryResult(SRWLuceneDatabase ldb, Hits hits) {
+    public LuceneQueryResult(SRWLuceneDatabase ldb, TopDocs hits) {
         this.ldb=ldb;
         this.hits=hits;
     }
 
-    public Hits getHits() {
+    public TopDocs getHits() {
         return hits;
     }
 
@@ -57,7 +57,7 @@ public class LuceneQueryResult extends QueryResult {
     public long getNumberOfRecords() {
         if(hits==null)
             return 0;
-        return hits.length();
+        return hits.totalHits;
     }
 
     @Override
@@ -69,6 +69,7 @@ public class LuceneQueryResult extends QueryResult {
     public RecordIterator newRecordIterator(long whichRec, int numRecs,
       String schemaId, ExtraDataType edt) throws InstantiationException {
         log.debug("whichRec="+whichRec+", numRecs="+numRecs+", schemaId="+schemaId+", edt="+edt);
-        return new LuceneRecordIterator(whichRec, schemaId, this, (RecordResolver)ldb.resolvers.get(schemaId), edt);
+        return new LuceneRecordIterator(whichRec, schemaId, this,
+            ldb.resolvers.get(schemaId), ldb.searcher, edt);
     }
 }

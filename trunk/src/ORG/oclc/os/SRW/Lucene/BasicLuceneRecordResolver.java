@@ -50,7 +50,7 @@ public class BasicLuceneRecordResolver implements RecordResolver {
         // Enumeration fields=doc.fields(); // lucene 1.4
         Iterator fields=doc.getFields().iterator();
         Field field;
-        StringBuffer sb=new StringBuffer("<LuceneDocument xmlns=\"http://www.oclc.org/LuceneDocument\">");
+        StringBuilder sb=new StringBuilder("<LuceneDocument xmlns=\"http://www.oclc.org/LuceneDocument\">");
         // while(fields.hasMoreElements()) {
         while(fields.hasNext()) {
             // field=(Field)fields.nextElement();

@@ -37,6 +37,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.search.*;
+import org.apache.lucene.store.SimpleFSDirectory;
 import org.z3950.zing.cql.CQLNode;
 import org.z3950.zing.cql.CQLTermNode;
 
@@ -120,9 +121,7 @@ public class SRWLuceneDatabase extends SRWDatabase {
     @Override
     public QueryResult getQueryResult(String queryStr, SearchRetrieveRequestType request) throws InstantiationException {
         log.debug("entering SRWLuceneDatabase.getQueryResult");
-        LuceneQueryResult   result;
         Sort sort=null;
-        String sortfield;
 
         try {
             if(log.isDebugEnabled())
@@ -142,11 +141,11 @@ public class SRWLuceneDatabase extends SRWDatabase {
             }
 
             // perform search
-            Hits results;
+            TopDocs results;
             if(sort!=null)
-                results = searcher.search(query, sort);
+                results = searcher.search(query, request.getMaximumRecords().intValue(), sort);
             else
-                results = searcher.search(query);
+                results = searcher.search(query, request.getMaximumRecords().intValue());
             return new LuceneQueryResult(this, results);
         }
         catch(SRWDiagnostic e) {
@@ -233,19 +232,26 @@ public class SRWLuceneDatabase extends SRWDatabase {
         if(indexPath==null) {
             // let's see if we can find the right directory
             // maybe dbHome?
-            if(IndexReader.indexExists(dbHome))
-                indexPath=dbHome;
-            else {
-                File file=new File(dbHome);
-                File[] dir=file.listFiles();
-                for(int i=0; i<dir.length; i++) {
-                    if(dir[i].isDirectory()) {
-                        if(IndexReader.indexExists(dir[i])) {
-                            indexPath=dir[i].getAbsolutePath();
-                            break;
+            try {
+                if(IndexReader.indexExists(new SimpleFSDirectory(new File(dbHome))))
+                    indexPath=dbHome;
+                else {
+                    File file=new File(dbHome);
+                    File[] dir=file.listFiles();
+                    for(int i=0; i<dir.length; i++) {
+                        if(dir[i].isDirectory()) {
+                            if(IndexReader.indexExists(new SimpleFSDirectory(dir[i]))) {
+                                indexPath=dir[i].getAbsolutePath();
+                                break;
+                            }
                         }
                     }
                 }
+            }
+            catch(Exception e) {
+                log.error("Lucene indexPath not specified for database "+dbname);
+                log.error("looking in dbHome "+dbHome+" or one of its subdirectories");
+                throw new InstantiationException("Lucene indexPath not specified");
             }
             log.debug("indexPath="+indexPath);
         }
@@ -255,7 +261,7 @@ public class SRWLuceneDatabase extends SRWDatabase {
             throw new InstantiationException("Lucene indexPath not specified");
         }
         try {
-            searcher=new IndexSearcher(indexPath);
+            searcher=new IndexSearcher(IndexReader.open(new SimpleFSDirectory(new File(indexPath))));
         }
         catch(Exception e) {
             log.error("Unable to create IndexSearcher with path="+indexPath+
