@@ -29,6 +29,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 import org.z3950.zing.cql.*;
 
 /**
@@ -74,22 +75,23 @@ public class BasicLuceneQueryTranslator implements CqlQueryTranslator {
         String defaultField=(String)indexMappings.get("cql.serverChoice");
         String defaultAnalyzerName=(String)properties.get("analyzer.default");
         if(defaultAnalyzerName==null || defaultAnalyzerName.length()==0)
-            defaultAnalyzer=new WhitespaceAnalyzer();
+            defaultAnalyzer=new WhitespaceAnalyzer(Version.LUCENE_35);
         else
             defaultAnalyzer=getAnalyzer(defaultAnalyzerName);
-        PerFieldAnalyzerWrapper analyzer=new PerFieldAnalyzerWrapper(defaultAnalyzer);
         // any other analyzers?
         Collection c=searcher.getIndexReader().getFieldNames(IndexReader.FieldOption.INDEXED);
         Iterator iter=c.iterator();
         String analyzerName, field;
+        Map analyzerPerField=new HashMap();
         while(iter.hasNext()) {
             field=(String)iter.next();
             analyzerName=(String)properties.get("analyzer."+field);
             if(analyzerName!=null && analyzerName.length()>0)
-                analyzer.addAnalyzer(field, getAnalyzer(analyzerName));
+                analyzerPerField.put(field, getAnalyzer(analyzerName));
         }
+        PerFieldAnalyzerWrapper analyzer=new PerFieldAnalyzerWrapper(defaultAnalyzer, analyzerPerField);
         
-        qp=new QueryParser(defaultField, analyzer);
+        qp=new QueryParser(Version.LUCENE_35, defaultField, analyzer);
     }
 
 // Not legal until JDK 6    @Override
@@ -122,7 +124,7 @@ public class BasicLuceneQueryTranslator implements CqlQueryTranslator {
                 sb.append(" NOT ");
             else if(node instanceof CQLOrNode)
                 sb.append(" OR ");
-            else sb.append(" UnknownBoolean("+cbn+") ");
+            else sb.append(" UnknownBoolean(").append(cbn).append(") ");
             makeLuceneQuery(cbn.right, sb);
             sb.append(")");
         }
@@ -163,9 +165,9 @@ public class BasicLuceneQueryTranslator implements CqlQueryTranslator {
                     sb.append(ctn.getTerm());
             }
             else
-                sb.append("Unsupported Relation: "+ctn.getRelation().getBase());
+                sb.append("Unsupported Relation: ").append(ctn.getRelation().getBase());
         }
-        else sb.append("UnknownCQLNode("+node+")");
+        else sb.append("UnknownCQLNode(").append(node).append(")");
     }
 
     
